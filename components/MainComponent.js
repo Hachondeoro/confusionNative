@@ -1,6 +1,7 @@
 import Constants from 'expo-constants';
 //Doing it here because: 1 I have to keep the phone screen on at all times otherwise it crashes. 
 // 2 The code errors are too vague, debugging becomes harder
+// I had to install 4 libraries more, adapt the react-navigation-stack and accomodate the createAppContainer
 
 import React, { Component } from 'react';
 import Home from './HomeComponent';
@@ -13,7 +14,23 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import { createAppContainer } from "react-navigation";
 import { Icon } from 'react-native-elements';
-// I had to install 4 libraries more, adapt the react-navigation-stack and accomodate the createAppContainer
+import { connect } from 'react-redux';
+import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
+
+
+const mapStateToProps = state => {
+    return {
+    }
+}
+
+const mapDispatchToProps = dispatch => ({
+    fetchDishes: () => dispatch(fetchDishes()),
+    fetchComments: () => dispatch(fetchComments()),
+    fetchPromos: () => dispatch(fetchPromos()),
+    fetchLeaders: () => dispatch(fetchLeaders()),
+
+})
+
 
 const MenuNavigator = createStackNavigator({
     Menu: {
@@ -23,7 +40,7 @@ const MenuNavigator = createStackNavigator({
                 onPress={() => navigation.toggleDrawer()}
             />,
             headerStyle: {
-                backgroundColor: '#512DA8'
+                backgroundColor: '#f13d3d'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -35,7 +52,7 @@ const MenuNavigator = createStackNavigator({
         screen: Dishdetail,
         navigationOptions: {
             headerStyle: {
-                backgroundColor: '#512DA8'
+                backgroundColor: '#f13d3d'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -54,7 +71,7 @@ const HomeNavigator = createStackNavigator({
                 onPress={() => navigation.toggleDrawer()}
             />,
             headerStyle: {
-                backgroundColor: '#512DA8'
+                backgroundColor: '#f13d3d'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -72,7 +89,7 @@ const AboutNavigator = createStackNavigator({
                 onPress={() => navigation.toggleDrawer()}
             />,
             headerStyle: {
-                backgroundColor: '#512DA8'
+                backgroundColor: '#f13d3d'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -89,7 +106,7 @@ const ContactNavigator = createStackNavigator({
                 onPress={() => navigation.toggleDrawer()}
             />,
             headerStyle: {
-                backgroundColor: '#512DA8'
+                backgroundColor: '#f13d3d'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -177,9 +194,18 @@ const MainNav = createDrawerNavigator({
 const MainNavigator = createAppContainer(MainNav);
 
 class Main extends Component {
+
+    componentDidMount() {
+        this.props.fetchDishes();
+        this.props.fetchComments();
+        this.props.fetchPromos();
+        this.props.fetchLeaders();
+
+    }
     render() {
         return (
             <View style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight }}>
+                {/* <View style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight }}> */}
                 <MainNavigator />
             </View>
         );
@@ -191,7 +217,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     drawerHeader: {
-        backgroundColor: '#512DA8',
+        backgroundColor: '#f13d3d',
         height: 140,
         alignItems: 'center',
         justifyContent: 'center',
@@ -210,4 +236,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Main;
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
