@@ -1,6 +1,8 @@
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
 // I wrote the first action creator using double function instead of double fat arrow, just to understand it better
+
+/* COMMENTS START */
 export const add = function (x) {
     return function (y) {
         return x + y
@@ -50,7 +52,7 @@ export const addComments = function (comments) {
         payload: comments
     })
 }
-
+/* COMMENTS END */
 //------------------------------------------------
 // export const add = x => y => x + y
 export const fetchDishes = () => (dispatch) => {
@@ -167,3 +169,38 @@ export const addLeaders = (leaders) => ({
     type: ActionTypes.ADD_LEADERS,
     payload: leaders
 });
+export const addFavorite = (dishId) => ({
+    type: ActionTypes.ADD_FAVORITE,
+    payload: dishId
+});
+
+export const postFavorite = (dishId) => (dispatch) => {
+    setTimeout(() => {
+        dispatch(addFavorite(dishId));
+    }, 800);
+}
+
+
+// Action creator, that returns an object
+export const addComment = (comment) => ({
+    type: ActionTypes.ADD_COMMENT,
+    payload: comment
+})
+// Action creator, that returns a function that dispatches the comment after 2 seconds
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+
+    const newComment = {
+        dishId: dishId,
+        rating: rating,
+        author: author,
+        comment: comment
+    }
+    newComment.date = new Date().toISOString();
+    setTimeout(() => {
+        dispatch(addComment(newComment))
+    }, 800);
+}
+
+// Process for persisting state through application: FAVORITES
+// 1 Action types  2 Action creators  3 Setup the new reducers and add it to the redux store
+// 4 persist this info by dispatching the appropiate actions when the user selects their dish as favorites

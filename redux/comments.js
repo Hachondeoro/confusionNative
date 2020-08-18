@@ -9,6 +9,13 @@ export const comments = (state = {
             return { ...state, errMess: null, comments: action.payload }
         case ActionTypes.COMMENTS_FAILED:
             return { ...state, errMess: action.payload, comments: [] };
+        case ActionTypes.ADD_COMMENT:
+            var comment = action.payload;
+            comment.id = state.comments.length;
+            // alert('WHAT THE FUCK')
+            return { ...state, comments: state.comments.concat(comment) }
+
+        //  why the added comment is not being rendered
         default:
             return state;
 

@@ -4,7 +4,7 @@ import Main from './components/MainComponent';
 import { Provider } from 'react-redux';
 import { ConfigureStore } from './redux/configureStore';
 import { StyleSheet, Text, View } from 'react-native';
-
+console.disableYellowBox = true;
 
 const store = ConfigureStore();
 
