@@ -9,6 +9,8 @@ import Menu from './MenuComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
 import Dishdetail from './DishdetailComponent';
+import Reservation from './ReservationComponent';
+import Favorites from './FavoriteComponent';
 import { View, Platform, Image, StyleSheet, ScrollView, Text, SafeAreaView } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
@@ -16,7 +18,6 @@ import { createAppContainer } from "react-navigation";
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
-import Reservation from './ReservationComponent';
 
 const mapStateToProps = state => {
     return {
@@ -134,6 +135,23 @@ const ReservationNavigator = createStackNavigator({
     }
 });
 
+const FavoritesNavigator = createStackNavigator({
+    Favorites: {
+        screen: Favorites,
+        navigationOptions: ({ navigation }) => ({
+            headerLeft: <Icon name='menu' size={24} color='white'
+                onPress={() => navigation.toggleDrawer()}
+            />,
+            headerStyle: {
+                backgroundColor: '#f13d3d'
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                color: '#fff'
+            }
+        })
+    }
+});
 
 const CustomDrawerContentComponent = (props) => (
     <ScrollView>
@@ -203,6 +221,19 @@ const MainNav = createDrawerNavigator(
                     <Icon name='address-card'
                         type='font-awesome'
                         size={22}
+                        color={tintColor} />
+                )
+            }
+        },
+        Favorites: {
+            screen: FavoritesNavigator,
+            navigationOptions: {
+                title: 'My favorites',
+                drawerLabel: 'My favorites',
+                drawerIcon: ({ tintColor }) => (
+                    <Icon name='heart'
+                        type='font-awesome'
+                        size={24}
                         color={tintColor} />
                 )
             }

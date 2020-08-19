@@ -204,3 +204,8 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
 // Process for persisting state through application: FAVORITES
 // 1 Action types  2 Action creators  3 Setup the new reducers and add it to the redux store
 // 4 persist this info by dispatching the appropiate actions when the user selects their dish as favorites
+
+export const deleteFavorite = (dishId) => ({
+    type: ActionTypes.DELETE_FAVORITE,
+    payload: dishId
+})
